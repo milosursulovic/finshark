@@ -1,4 +1,5 @@
 ﻿using Finshark.Data;
+using Finshark.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Finshark.Controllers
@@ -17,14 +18,21 @@ namespace Finshark.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var stocks = _applicationDbContext.Stocks.ToList();
+            var stocks = _applicationDbContext
+                .Stocks
+                .ToList()
+                .Select(s => s.ToDto());
+
             return Ok(stocks);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById([FromRoute] int id)
         {
-            var stock = _applicationDbContext.Stocks.Find(id);
+            var stock = _applicationDbContext
+                .Stocks
+                .Find(id)
+                .ToDto();
 
             if (stock == null)
             {
