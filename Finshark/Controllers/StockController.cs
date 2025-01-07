@@ -1,4 +1,5 @@
 ﻿using Finshark.Data;
+using Finshark.Dtos.Stock;
 using Finshark.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,20 +9,20 @@ namespace Finshark.Controllers
     [ApiController]
     public class StockController : ControllerBase
     {
-        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ApplicationDbContext _context;
 
         public StockController(ApplicationDbContext applicationDbContext)
         {
-            _applicationDbContext = applicationDbContext;
+            _context = applicationDbContext;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var stocks = _applicationDbContext
+            var stocks = _context
                 .Stocks
                 .ToList()
-                .Select(s => s.ToDto());
+                .Select(s => s.ToStockDto());
 
             return Ok(stocks);
         }
@@ -29,10 +30,10 @@ namespace Finshark.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById([FromRoute] int id)
         {
-            var stock = _applicationDbContext
+            var stock = _context
                 .Stocks
                 .Find(id)
-                .ToDto();
+                .ToStockDto();
 
             if (stock == null)
             {
@@ -40,6 +41,15 @@ namespace Finshark.Controllers
             }
 
             return Ok(stock);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateStockRequest stockDto)
+        {
+            var stockModel = stockDto.ToStockFromCreateDto();
+            _context.Stocks.Add(stockModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
         }
     }
 }

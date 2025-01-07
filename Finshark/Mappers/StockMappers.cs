@@ -5,7 +5,7 @@ namespace Finshark.Mappers
 {
     public static class StockMappers
     {
-        public static StockDto ToDto(this Stock stock)
+        public static StockDto ToStockDto(this Stock stock)
         {
             return new StockDto
             {
@@ -16,6 +16,19 @@ namespace Finshark.Mappers
                 LastDiv = stock.LastDiv,
                 Industry = stock.Industry,
                 MarketCap = stock.MarketCap
+            };
+        }
+
+        public static Stock ToStockFromCreateDto(this CreateStockRequest stockDto)
+        {
+            return new Stock
+            {
+                Symbol = stockDto.Symbol,
+                CompanyName = stockDto.CompanyName,
+                Purchase = stockDto.Purchase,
+                LastDiv = stockDto.LastDiv,
+                Industry = stockDto.Industry,
+                MarketCap = stockDto.MarketCap
             };
         }
     }
