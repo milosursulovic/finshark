@@ -1,5 +1,6 @@
 ﻿using Finshark.Data;
 using Finshark.Dtos.Stock;
+using Finshark.Interfaces;
 using Finshark.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,18 +12,18 @@ namespace Finshark.Controllers
     public class StockController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IStockRepository _stockRepository;
 
-        public StockController(ApplicationDbContext applicationDbContext)
+        public StockController(ApplicationDbContext applicationDbContext, IStockRepository stockRepository)
         {
             _context = applicationDbContext;
+            _stockRepository = stockRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var stocks = await _context
-                .Stocks
-                .ToListAsync();
+            var stocks = await _stockRepository.GetAllAsync();
 
             var stockDto = stocks.Select(s => s.ToStockDto());
 
