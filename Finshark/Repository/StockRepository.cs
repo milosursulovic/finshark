@@ -48,6 +48,7 @@ namespace Finshark.Repository
         {
             return await _context
                 .Stocks
+                .Include(c => c.Comments)
                 .ToListAsync();
         }
 
@@ -55,7 +56,8 @@ namespace Finshark.Repository
         {
             return await _context
                 .Stocks
-                .FindAsync(id);
+                .Include(c => c.Comments)
+                .FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<Stock?> UpdateAsync(int id, UpdateStockRequest stockDto)
