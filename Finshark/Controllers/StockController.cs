@@ -23,7 +23,7 @@ namespace Finshark.Controllers
 
             var stockDto = stocks.Select(s => s.ToStockDto());
 
-            return Ok(stocks);
+            return Ok(stockDto);
         }
 
         [HttpGet("{id}")]
