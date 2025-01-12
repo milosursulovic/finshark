@@ -2,7 +2,6 @@ using Finshark.Data;
 using Finshark.Interfaces;
 using Finshark.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
