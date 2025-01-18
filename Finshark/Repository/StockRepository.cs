@@ -60,6 +60,13 @@ namespace Finshark.Repository
                 .FirstOrDefaultAsync(i => i.Id == id);
         }
 
+        public Task<bool> StockExists(int id)
+        {
+            return _context
+                .Stocks
+                .AnyAsync(s => s.Id == id);
+        }
+
         public async Task<Stock?> UpdateAsync(int id, UpdateStockRequest stockDto)
         {
             var existingStock = await _context
