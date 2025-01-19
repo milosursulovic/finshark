@@ -1,4 +1,5 @@
 ﻿using Finshark.Dtos.Account;
+using Finshark.Interfaces;
 using Finshark.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace Finshark.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly ITokenService _tokenService;
 
-        public AccountController(UserManager<AppUser> userManager)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         // Test user email:     investor444@gmail.com
@@ -43,7 +46,15 @@ namespace Finshark.Controllers
 
                     if (roleResult.Succeeded)
                     {
-                        return Ok("User created successfully");
+                        return Ok
+                            (
+                                new NewUserDto
+                                {
+                                    Username = appUser.UserName,
+                                    Email = appUser.Email,
+                                    Token = _tokenService.CreateToken(appUser)
+                                }
+                            );
                     }
                     else
                     {
