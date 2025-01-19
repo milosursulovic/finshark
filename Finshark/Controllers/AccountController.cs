@@ -16,6 +16,9 @@ namespace Finshark.Controllers
             _userManager = userManager;
         }
 
+        // Test user email:     investor444@gmail.com
+        // Test user password:  4j9eZyk(&RiJJaU
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
