@@ -50,6 +50,7 @@ namespace Finshark.Repository
             var stocks = _context
                 .Stocks
                 .Include(c => c.Comments)
+                .ThenInclude(a => a.AppUser)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(query.CompanyName))

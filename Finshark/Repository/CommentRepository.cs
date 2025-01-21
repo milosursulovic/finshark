@@ -49,6 +49,7 @@ namespace Finshark.Repository
         {
             return await _context
                 .Comments
+                .Include(a => a.AppUser)
                 .ToListAsync();
         }
 
@@ -56,6 +57,7 @@ namespace Finshark.Repository
         {
             return await _context
                 .Comments
+                .Include(a => a.AppUser)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
